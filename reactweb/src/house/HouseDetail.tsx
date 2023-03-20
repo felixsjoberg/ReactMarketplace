@@ -2,8 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import ApiStatus from '../ApiStatus';
+import Bids from '../bids/Bids';
 import { currencyFormatter } from '../config';
-import { useFetchHouse } from '../hooks/HouseHooks';
+import { useDeleteHouse, useFetchHouse } from '../hooks/HouseHooks';
 import defaultImage from './defaultPhoto';
 
 
@@ -14,6 +15,8 @@ const HouseDetail = () => {
 
 
     const { data, status, isSuccess } = useFetchHouse(houseId);
+    const deleteHouseMutation = useDeleteHouse();
+
     if (!isSuccess) return <ApiStatus status={status} />;
     if (!data) return <div>("House not found");</div>
 
@@ -30,7 +33,7 @@ const HouseDetail = () => {
                 <div className="row mt-3">
                     <div className="col-2">
                         <Link
-                            className="btn btn-primary w-100"
+                            className="btn btn-custom text-white w-100"
                             to={`/house/edit/${data.id}`}
                         >
                             Edit
@@ -39,10 +42,10 @@ const HouseDetail = () => {
                     <div className="col-2">
                         <button
                             className="btn btn-danger w-100"
-                            // onClick={() => {
-                            //     if (window.confirm("Are you sure?"))
-                            //         deleteHouseMutation.mutate(data);
-                            // }}
+                            onClick={() => {
+                                if (window.confirm("Are you sure?"))
+                                    deleteHouseMutation.mutate(data);
+                            }}
                         >
                             Delete
                         </button>
@@ -64,6 +67,7 @@ const HouseDetail = () => {
                 <div className="row">
                     <div className="col-12 mt-3">{data.description}</div>
                 </div>
+                <Bids house={data} />
             </div>
         </div>
     );

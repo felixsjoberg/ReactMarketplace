@@ -1,9 +1,9 @@
 import React from 'react'
-import config from '../config'
-import useFetchHouses from '../hooks/HouseHooks';
 import { House } from '../types/house'
 import { currencyFormatter } from '../config';
 import { useNavigate } from 'react-router-dom';
+import { useFetchHouses } from '../hooks/HouseHooks';
+import { Link } from 'react-router-dom';
 
 export default function HouseList() {
     const nav = useNavigate();
@@ -35,6 +35,9 @@ export default function HouseList() {
                         ))}
                 </tbody>
             </table>
+            <Link className="btn btn-custom text-white" to="/house/add">
+                Add
+            </Link>
         </div>
     );
 };
